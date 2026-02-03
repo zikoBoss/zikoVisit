@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JA Family - مجتمع فري فاير العربي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* ===== كل CSS في مكان واحد ===== */
+        :root {
+            --primary: #FF4500;
+            --primary-dark: #CC3700;
+            --primary-light: #FF6B35;
+            --secondary: #00BFFF;
+            --secondary-dark: #0099CC;
+            --accent: #FFD700;
+            --dark: #1a1a2e;
+            --darker: #0f0f1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --glow: 0 0 20px rgba(255, 69, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-full: 50px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* المؤشر */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .ff-logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ff-logo i {
+            font-size: 4rem;
+            animation: fire 1.5s infinite alternate;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: var(--radius-full);
+            animation: loading 2s ease-in-out forwards;
+        }
+
+        /* الرأس */
+        .header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-sub {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            transform: scaleX(1);
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+            background: rgba(255, 69, 0, 0.1);
+        }
+
+        /* الصفحات */
+        .page {
+            min-height: 100vh;
+            padding: 100px 0 60px;
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* الصفحة الرئيسية */
+        .hero {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradient 3s ease infinite;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        /* إطار الصورة */
+        .image-frame-container {
+            position: relative;
+            max-width: 800px;
+            margin: 3rem auto;
+        }
+
+        .image-frame {
+            position: relative;
+            padding: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .frame {
+            background: var(--dark);
+            border-radius: calc(var(--radius-lg) - 5px);
+            overflow: hidden;
+            position: relative;
+            transform: translateZ(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .game-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* الإحصائيات */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            min-width: 150px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--glow);
+        }
+
+        .stat-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* أزرار CTA */
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(255, 69, 0, 0.3);
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 69, 0, 0.5);
+        }
+
+        /* نظام المصادقة */
+        .auth-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: rgba(26, 26, 46, 0.8);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1.2rem;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 69, 0, 0.1);
+            color: var(--primary);
+        }
+
+        .auth-box {
+            padding: 2.5rem;
+            display: none;
+        }
+
+        .auth-box.active {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        /* النماذج */
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius);
+            color: var(--light);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.2);
+        }
+
+        /* منطقة رفع الصور */
+        .upload-area {
+            border: 2px dashed var(--primary);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover {
+            background: rgba(255, 69, 0, 0.1);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* المشاركات */
+        .posts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .post {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+        }
+
+        .post:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .post-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        /* معرض الصور */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            height: 200px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* الفوتر */
+        .footer {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+            border-top: 2px solid var(--primary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        /* الحالة المخفية */
+        .hidden {
+            display: none !important;
+        }
+
+        /* الأنيميشن */
+        @keyframes fire {
+            0% { text-shadow: 0 0 5px var(--primary); }
+            100% { text-shadow: 0 0 20px var(--accent), 0 0 30px var(--primary); }
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* التجاوب */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2rem; }
+            .stats { gap: 1rem; }
+            .stat-item { min-width: 120px; }
+            .form-row { flex-direction: column; }
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background: var(--dark);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+            .nav-menu.active { right: 0; }
+            .hamburger { display: flex; }
+        }
+    </style>
+</head>
+<body>
+    <!-- المؤشر -->
+    <div class="loader">
+        <div class="ff-logo">
+            <i class="fas fa-fire"></i>
+            <span>JA Family 1M </span>
+        </div>
+        <div class="loading-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+
+    <!-- الرأس -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-fire"></i>
+                    <div>
+                        <div class="logo-text">JA Family 1M </div>
+                        <div class="logo-sub">Free Fire Community</div>
+                    </div>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="#community" class="nav-link"><i class="fas fa-users"></i> المجتمع</a></li>
+                    <li><a href="#gallery" class="nav-link"><i class="fas fa-images"></i> معرض اللعبة</a></li>
+                    <li><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> عنا</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- الصفحة الرئيسية -->
+    <section id="home" class="page active">
+        <div class="container">
+            <div class="hero">
+                <h1 class="hero-title">
+                    <span class="gradient-text">مرحباً في JA Family</span><br>
+                    <span style="color: var(--secondary); font-size: 1.8rem;">اقوى كلان في الشرق الاوسط</span>
+                </h1>
+                
+                <p class="hero-description">
+هذا الموقع خاص بمشاركة الصور و الاستراتجيات الخاصة بلعبة فري فاير ، شارك خبرتك  مع اصدقلئك وارفع مستواك معنا نحن لسنا مجرد كرابطة نحن عائلة
+                </p>
+                
+                <!-- إطار الصورة -->
+                <div class="image-frame-container">
+                    <div class="image-frame">
+                        <div class="frame">
+                            <div class="game-image">
+                                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                     alt="فري فاير" id="main-image">
+                                <div class="image-overlay">
+                                    <h3 style="color: var(--accent);">نحو الفوز معاً</h3>
+                                    <p> انضم الى أمهر الاعبين </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الإحصائيات -->
+                <div class="stats">
+                    <div class="stat-item">
+                        <i class="fas fa-gamepad"></i>
+                        <span class="stat-number" data-count="5000">5000</span>
+                        <span class="stat-label">لاعب نشط</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-trophy"></i>
+                        <span class="stat-number" data-count="250">250</span>
+                        <span class="stat-label">بطولة</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span class="stat-number" data-count="120">120</span>
+                        <span class="stat-label">فريق نشط</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span class="stat-number" data-count="50">50</span>
+                        <span class="stat-label">مدرب محترف</span>
+                    </div>
+                </div>
+                
+                <button id="join-btn" class="cta-button animate__animated animate__pulse animate__infinite">
+                    <i class="fas fa-play-circle"></i> انضم إلينا الآن
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- صفحة المجتمع -->
+    <section id="community" class="page">
+        <div class="container">
+            <h1 class="hero-title" style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-users"></i> مجتمع فري فاير
+            </h1>
+            
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="signup">إنشاء حساب</button>
+                    <button class="tab-btn" data-tab="login">تسجيل الدخول</button>
+                </div>
+                
+                <!-- إنشاء حساب -->
+                <div class="auth-box active" id="signup-box">
+                    <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--accent);">
+                        <i class="fas fa-user-plus"></i> انضم إلى المعركة
+                    </h2>
+                    <div id="signup-message" style="display: none; padding: 10px; border-radius: var(--radius); margin-bottom: 1rem;"></div>
+                    
+                    <form id="signup-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name"><i class="fas fa-user"></i> اسم اللاعب</label>
+                                <input type="text" id="name" placeholder="اسمك في اللعبة" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthdate"><i class="fas fa-calendar"></i> تاريخ الميلاد</label>
+                                <input type="date" id="birthdate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
+                                <input type="password" id="password" placeholder="6 أحرف على الأقل" minlength="6" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password"><i class="fas fa-lock"></i> تأكيد كلمة المرور</label>
+                                <input type="password" id="confirm-password" placeholder="أعد إدخال كلمة المرور" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="game-level"><i class="fas fa-star"></i> مستواك في فري فاير</label>
+                            <select id="game-level" style="color: black;">
+                                <option value="beginner">مبتدئ 🟢</option>
+                                <option value="intermediate">متوسط 🟡</option>
+                                <option value="advanced">متقدم 🟠</option>
+                                <option value="pro">محترف 🔴</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-gamepad"></i> أنماط اللعب المفضلة</label>
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                                <label style="display: flex; align-items: center; gap: 5px;">
+                                    <input type="checkbox" name="play-style" value="solo"> سولو
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 5px;">
+                                    <input type="checkbox" name="play-style" value="duo"> ثنائي
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 5px;">
+                                    <input type="checkbox" name="play-style" value="squad"> سكواد
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 5px;">
+                                    <input type="checkbox" name="play-style" value="ranked"> رانكد
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="cta-button" style="width: 100%; margin-top: 1rem;">
+                            <i class="fas fa-user-plus"></i> إنشاء حساب لاعب
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- تسجيل الدخول -->
+                <div class="auth-box" id="login-box">
+                    <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--secondary);">
+                        <i class="fas fa-sign-in-alt"></i> عودتنا أحلى!
+                    </h2>
+                    <div id="login-message" style="display: none; padding: 10px; border-radius: var(--radius); margin-bottom: 1rem;"></div>
+                    
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-name"><i class="fas fa-user"></i> اسم اللاعب</label>
+                            <input type="text" id="login-name" placeholder="اسمك في اللعبة" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password"><i class="fas fa-lock"></i> كلمة المرور</label>
+                            <input type="password" id="login-password" placeholder="كلمة المرور" required>
+                        </div>
+                        
+                        <button type="submit" class="cta-button" style="width: 100%; margin-top: 1rem;">
+                            <i class="fas fa-sign-in-alt"></i> دخول إلى المعركة
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- قسم المشاركات -->
+            <div id="posts-section" style="margin-top: 3rem; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="color: var(--accent);"><i class="fas fa-bullhorn"></i> مشاركات المجتمع</h2>
+                    <button id="new-post-btn" class="cta-button" style="padding: 0.8rem 1.5rem;">
+                        <i class="fas fa-plus"></i> مشاركة جديدة
+                    </button>
+                </div>
+                
+                <!-- نموذج المشاركة -->
+                <div id="post-form" style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: var(--radius); margin-bottom: 2rem; display: none;">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">
+                        <i class="fas fa-image"></i> شارك تجربتك
+                    </h3>
+                    
+                    <form id="add-post-form">
+                        <div class="form-group">
+                            <label for="post-description"><i class="fas fa-edit"></i> اكتب مشاركتك</label>
+                            <textarea id="post-description" placeholder="شارك استراتيجية، خبرة، موقف ممتع، أو أي شيء عن فري فاير..." rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-image"></i> رفع صورة من هاتفك</label>
+                            <div class="upload-area" id="upload-area">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>انقر هنا لاختيار صورة أو اسحب وأفلت</p>
+                                <p style="color: var(--secondary); font-size: 0.9rem;">يمكنك رفع صورة من هاتفك مباشرة!</p>
+                                <input type="file" id="post-image" accept="image/*" style="display: none;">
+                                <div id="image-preview" style="margin-top: 1rem;"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <button type="button" id="cancel-post" class="cta-button" style="background: var(--gray); flex: 1;">إلغاء</button>
+                            <button type="submit" class="cta-button" style="flex: 2;">
+                                <i class="fas fa-paper-plane"></i> نشر المشاركة
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- عرض المشاركات -->
+                <div class="posts-container" id="posts-container">
+                    <!-- سيتم إضافة المشاركات هنا -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- معرض الصور -->
+    <section id="gallery" class="page">
+        <div class="container">
+            <h1 class="hero-title" style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-images"></i> معرض فري فاير
+            </h1>
+            <p style="text-align: center; color: #ccc; margin-bottom: 2rem; max-width: 800px; margin: 0 auto 3rem;">
+                استمتع بأروع لقطات اللعبة وأفضل الاستراتيجيات البصرية من مجتمعنا
+            </p>
+            
+            <div class="gallery-container" id="gallery-container">
+                <!-- سيتم إضافة الصور ديناميكياً -->
+            </div>
+        </div>
+    </section>
+
+    <!-- صفحة عنا -->
+    <section id="about" class="page">
+        <div class="container">
+            <h1 class="hero-title" style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-info-circle"></i> عن مجتمع JA Family
+            </h1>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: var(--radius); text-align: center;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-fire" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h3 style="color: var(--accent); margin-bottom: 1rem;">من نحن</h3>
+                    <p style="color: #ccc; line-height: 1.6;">
+                        مجتمع JA Family هو أكبر تجمع عربي لمحبي لعبة فري فاير، تأسس عام 2020 ويسعى لبناء بيئة تفاعلية تجمع اللاعبين العرب تحت مظلة واحدة.
+                    </p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: var(--radius); text-align: center;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(45deg, var(--secondary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-bullseye" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h3 style="color: var(--accent); margin-bottom: 1rem;">رؤيتنا</h3>
+                    <p style="color: #ccc; line-height: 1.6;">
+                        أن نكون المرجع الأول للاعب فري فاير العربي، ونساعده على تطوير مهاراته وربطه بفريق يناسبه ورفع مستوى اللعبة في العالم العربي.
+                    </p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: var(--radius); text-align: center;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(45deg, var(--accent), var(--primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-handshake" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h3 style="color: var(--accent); margin-bottom: 1rem;">قيمنا</h3>
+                    <p style="color: #ccc; line-height: 1.6;">
+                        نؤمن بالروح الرياضية، التعاون، الاحترام المتبادل، وتطوير المهارات. نرفض التنمر ونشجع العمل الجماعي بين جميع أعضاء مجتمعنا.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- فريق الإدارة -->
+            <div style="margin-top: 4rem;">
+                <h2 style="text-align: center; color: var(--secondary); margin-bottom: 2rem;">
+                    <i class="fas fa-users-cog"></i> فريق الإدارة
+                </h2>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="width: 100px; height: 100px; background: linear-gradient(45deg, #FF6B35, #FFD700); border-radius: 50%; margin: 0 auto 1rem;"></div>
+                        <h4 style="color: var(--light);">قائد المجتمع</h4>
+                        <p style="color: #ccc;">خالد</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100px; height: 100px; background: linear-gradient(45deg, #00BFFF, #FF6B35); border-radius: 50%; margin: 0 auto 1rem;"></div>
+                        <h4 style="color: var(--light);">منسق الفرق</h4>
+                        <p style="color: #ccc;">أحمد</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100px; height: 100px; background: linear-gradient(45deg, #FFD700, #00BFFF); border-radius: 50%; margin: 0 auto 1rem;"></div>
+                        <h4 style="color: var(--light);">مدرب محترف</h4>
+                        <p style="color: #ccc;">محمد</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div style="text-align: center;">
+                <div class="logo" style="justify-content: center; margin-bottom: 1.5rem;">
+                    <i class="fas fa-fire" style="font-size: 2.5rem;"></i>
+                    <div>
+                        <div class="logo-text" style="font-size: 2rem;">JA Family</div>
+                        <div class="logo-sub" style="font-size: 1rem;">Free Fire Community</div>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+                
+                <p style="color: #ccc; max-width: 600px; margin: 1.5rem auto; line-height: 1.6;">
+                    مجتمع JA Family غير مرتبط رسمياً بلعبة فري فاير أو شركة Garena. هذا موقع مجتمعي تعليمي وتفاععي للاعبين العرب.
+                </p>
+                
+                <p style="color: #999; font-size: 0.9rem; margin-top: 1.5rem;">
+                    &copy; 2023 JA Family. جميع الحقوق محفوظة. | تم التطوير بواسطة مجتمع JA Family
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- كل JavaScript في مكان واحد -->
+    <script>
+        // بيانات التطبيق
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('jaFamilyUsers')) || [];
+        let posts = JSON.parse(localStorage.getItem('jaFamilyPosts')) || [];
+        let freeFireImages = [
+            {
+                url: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "بطولة فري فاير"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "قتال جماعي"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "أسلحة متطورة"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "سيارات القتال"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "جرافيك رائع"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "تكتيكات القتال"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "مهارات عالية"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                title: "فوز جماعي"
+            }
+        ];
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // إخفاء المؤشر بعد التحميل
+            setTimeout(() => {
+                document.querySelector('.loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelector('.loader').style.display = 'none';
+                    initApp();
+                }, 500);
+            }, 2000);
+            
+            // تحميل الصور الافتراضية
+            loadGalleryImages();
+        });
+
+        function initApp() {
+            // عناصر DOM
+            const navLinks = document.querySelectorAll('.nav-link');
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const joinBtn = document.getElementById('join-btn');
+            const uploadArea = document.getElementById('upload-area');
+            const imageInput = document.getElementById('post-image');
+            const newPostBtn = document.getElementById('new-post-btn');
+            const cancelPostBtn = document.getElementById('cancel-post');
+            const postForm = document.getElementById('post-form');
+            
+            // إحصائيات متحركة
+            animateStats();
+            
+            // التنقل بين الصفحات
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('href').substring(1);
+                    showPage(pageId);
+                    
+                    // تحديث الروابط النشطة
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // إغلاق القائمة على الجوال
+                    if (hamburger.classList.contains('active')) {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    }
+                });
+            });
+            
+            // القائمة المتنقلة
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+            
+            // التبديل بين التبويبات
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    showTab(tabId);
+                    
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+            
+            // زر الانضمام
+            joinBtn.addEventListener('click', () => {
+                showPage('community');
+                document.querySelector('[href="#community"]').classList.add('active');
+                document.querySelector('[href="#home"]').classList.remove('active');
+            });
+            
+            // رفع الصور
+            if (uploadArea) {
+                uploadArea.addEventListener('click', () => imageInput.click());
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = 'var(--accent)';
+                    uploadArea.style.background = 'rgba(255, 69, 0, 0.1)';
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.style.borderColor = 'var(--primary)';
+                    uploadArea.style.background = 'transparent';
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = 'var(--primary)';
+                    uploadArea.style.background = 'transparent';
+                    
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        handleImageUpload(file);
+                    }
+                });
+                
+                imageInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        handleImageUpload(file);
+                    }
+                });
+            }
+            
+            // إدارة المشاركات
+            if (newPostBtn) {
+                newPostBtn.addEventListener('click', () => {
+                    postForm.style.display = 'block';
+                    newPostBtn.style.display = 'none';
+                });
+            }
+            
+            if (cancelPostBtn) {
+                cancelPostBtn.addEventListener('click', () => {
+                    postForm.style.display = 'none';
+                    if (newPostBtn) newPostBtn.style.display = 'block';
+                    document.getElementById('add-post-form').reset();
+                    document.getElementById('image-preview').innerHTML = '';
+                });
+            }
+            
+            // تهيئة النماذج
+            initForms();
+            
+            // التحقق من تسجيل الدخول
+            checkLoginStatus();
+            
+            // تحميل المشاركات
+            loadPosts();
+        }
+
+        // إظهار الصفحة
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+        }
+
+        // إظهار التبويب
+        function showTab(tabId) {
+            document.querySelectorAll('.auth-box').forEach(box => {
+                box.classList.remove('active');
+            });
+            
+            const targetBox = document.getElementById(tabId + '-box');
+            if (targetBox) {
+                targetBox.classList.add('active');
+            }
+        }
+
+        // تحميل معرض الصور
+        function loadGalleryImages() {
+            const container = document.getElementById('gallery-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            freeFireImages.forEach(image => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${image.url}" alt="${image.title}" loading="lazy">
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 1rem; color: white;">
+                        ${image.title}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // الأنيميشن للإحصائيات
+        function animateStats() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-count');
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current);
+                        setTimeout(updateCounter, 20);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                setTimeout(updateCounter, 1000);
+            });
+        }
+
+        // معالجة رفع الصور
+        function handleImageUpload(file) {
+            const reader = new FileReader();
+            const preview = document.getElementById('image-preview');
+            
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                    <div style="text-align: center;">
+                        <img src="${e.target.result}" alt="معاينة" style="max-width: 200px; max-height: 200px; border-radius: var(--radius); border: 2px solid var(--primary);">
+                        <p style="color: var(--secondary); margin-top: 10px;">${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>
+                    </div>
+                `;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        // تسجيل الدخول
+        function loginUser(username, password) {
+            const user = users.find(u => u.name === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // تحديث واجهة المستخدم
+                document.getElementById('posts-section').style.display = 'block';
+                document.querySelector('.auth-container').style.display = 'none';
+                
+                // إظهار رسالة نجاح
+                showMessage('success', `مرحباً بعودتك ${user.name}!`, 'login-message');
+                
+                // تحميل المشاركات
+                loadPosts();
+                
+                return true;
+            }
+            
+            return false;
+        }
+
+        // تحميل المشاركات
+        function loadPosts() {
+            const container = document.getElementById('posts-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #ccc;">
+                        <i class="fas fa-comments" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3>لا توجد مشاركات بعد</h3>
+                        <p>كن أول من يشارك تجربته في فري فاير!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            posts.forEach(post => {
+                const postElement = createPostElement(post);
+                container.appendChild(postElement);
+            });
+        }
+
+        // إنشاء عنصر المشاركة
+        function createPostElement(post) {
+            const div = document.createElement('div');
+            div.className = 'post';
+            div.innerHTML = `
+                <img src="${post.imageUrl || freeFireImages[0].url}" 
+                     alt="مشاركة" class="post-img">
+                <div class="post-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                ${post.author ? post.author.charAt(0).toUpperCase() : 'J'}
+                            </div>
+                            <div>
+                                <h4 style="color: var(--light); margin: 0;">${post.author || 'لاعب'}</h4>
+                                <small style="color: #ccc;">${post.level || 'لاعب'} • ${post.date || 'اليوم'}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color: #ccc; line-height: 1.6;">${post.description || 'مشاركة حول فري فاير'}</p>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem; color: #999;">
+                        <span><i class="far fa-thumbs-up"></i> ${post.likes || 0}</span>
+                        <span><i class="far fa-comment"></i> ${post.comments || 0}</span>
+                        <span><i class="far fa-eye"></i> ${post.views || Math.floor(Math.random() * 100)}</span>
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // التحقق من حالة تسجيل الدخول
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById('posts-section').style.display = 'block';
+                document.querySelector('.auth-container').style.display = 'none';
+                loadPosts();
+            }
+        }
+
+        // إظهار الرسائل
+        function showMessage(type, text, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.textContent = text;
+            container.style.display = 'block';
+            container.style.background = type === 'success' ? 'rgba(40, 167, 69, 0.2)' : 'rgba(220, 53, 69, 0.2)';
+            container.style.color = type === 'success' ? '#28a745' : '#dc3545';
+            container.style.border = type === 'success' ? '1px solid rgba(40, 167, 69, 0.3)' : '1px solid rgba(220, 53, 69, 0.3)';
+            
+            setTimeout(() => {
+                container.style.display = 'none';
+            }, 5000);
+        }
+
+        // تهيئة النماذج
+        function initForms() {
+            // نموذج إنشاء حساب
+            const signupForm = document.getElementById('signup-form');
+            if (signupForm) {
+                signupForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('name').value.trim();
+                    const birthdate = document.getElementById('birthdate').value;
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirm-password').value;
+                    const level = document.getElementById('game-level').value;
+                    
+                    if (password !== confirmPassword) {
+                        showMessage('error', 'كلمة المرور غير متطابقة', 'signup-message');
+                        return;
+                    }
+                    
+                    if (users.some(u => u.name === name)) {
+                        showMessage('error', 'اسم اللاعب موجود بالفعل', 'signup-message');
+                        return;
+                    }
+                    
+                    const newUser = {
+                        id: Date.now(),
+                        name,
+                        birthdate,
+                        password,
+                        level,
+                        joinDate: new Date().toLocaleDateString('ar-EG')
+                    };
+                    
+                    users.push(newUser);
+                    localStorage.setItem('jaFamilyUsers', JSON.stringify(users));
+                    
+                    if (loginUser(name, password)) {
+                        showMessage('success', 'تم إنشاء حسابك بنجاح!', 'signup-message');
+                    }
+                });
+            }
+            
+            // نموذج تسجيل الدخول
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('login-name').value.trim();
+                    const password = document.getElementById('login-password').value;
+                    
+                    if (loginUser(name, password)) {
+                        showMessage('success', 'تم تسجيل الدخول بنجاح!', 'login-message');
+                    } else {
+                        showMessage('error', 'اسم المستخدم أو كلمة المرور غير صحيحة', 'login-message');
+                    }
+                });
+            }
+            
+            // نموذج إضافة مشاركة
+            const addPostForm = document.getElementById('add-post-form');
+            if (addPostForm) {
+                addPostForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    if (!currentUser) {
+                        alert('يجب تسجيل الدخول أولاً');
+                        return;
+                    }
+                    
+                    const description = document.getElementById('post-description').value.trim();
+                    const imageInput = document.getElementById('post-image');
+                    
+                    let imageUrl = '';
+                    
+                    if (imageInput.files.length > 0) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imageUrl = e.target.result;
+                            savePost(description, imageUrl);
+                        };
+                        reader.readAsDataURL(imageInput.files[0]);
+                    } else {
+                        imageUrl = freeFireImages[Math.floor(Math.random() * freeFireImages.length)].url;
+                        savePost(description, imageUrl);
+                    }
+                });
+            }
+        }
+
+        // حفظ المشاركة
+        function savePost(description, imageUrl) {
+            const newPost = {
+                id: Date.now(),
+                author: currentUser.name,
+                description,
+                imageUrl,
+                level: currentUser.level || 'لاعب',
+                date: new Date().toLocaleDateString('ar-EG'),
+                likes: 0,
+                comments: 0,
+                views: Math.floor(Math.random() * 100)
+            };
+            
+            posts.unshift(newPost);
+            localStorage.setItem('jaFamilyPosts', JSON.stringify(posts));
+            
+            // إضافة المشاركة الجديدة
+            const container = document.getElementById('posts-container');
+            if (container.querySelector('.no-posts')) {
+                container.innerHTML = '';
+            }
+            
+            const postElement = createPostElement(newPost);
+            container.prepend(postElement);
+            
+            // إعادة تعيين النموذج
+            document.getElementById('add-post-form').reset();
+            document.getElementById('image-preview').innerHTML = '';
+            document.getElementById('post-form').style.display = 'none';
+            document.getElementById('new-post-btn').style.display = 'block';
+            
+            alert('تم نشر مشاركتك بنجاح!');
+        }
+
+        // تسجيل الخروج (وظيفة إضافية)
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('posts-section').style.display = 'none';
+            document.querySelector('.auth-container').style.display = 'block';
+            showTab('login');
+            alert('تم تسجيل الخروج بنجاح');
+        }
+    </script>
+</body>
+</html>
