@@ -29,7 +29,7 @@ MAX_CONCURRENT_REQUESTS = 50
 REQUEST_TIMEOUT = 10
 TOKEN_REFRESH_INTERVAL = 2 * 60 * 60  # 2 hours
 
-# Get the directory where this script is located (Termux compatible)
+# Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = SCRIPT_DIR
 API_BASE_URL = "https://jwt-gen-vaibhav.vercel.app/token"
@@ -338,9 +338,9 @@ def refresh_all_tokens_sync():
             try:
                 success = loop.run_until_complete(refresh_region_tokens(region))
                 if not success:
-                    logger.warning(f"Failed to refresh {{region}}, continuing...")
+                    logger.warning(f"Failed to refresh {region}, continuing...")
             except Exception as e:
-                logger.error(f"Error in {{region}}: {e}")
+                logger.error(f"Error in {region}: {e}")
                 import traceback
                 logger.error(traceback.format_exc())
 
@@ -883,7 +883,8 @@ def test_region():
 
 # ==================== ENTRY POINT ====================
 if __name__ == "__main__":
-    port = int(os.environ.get("SERVER_PORT", os.environ.get("PORT", 5070)))
+    # للتوافق مع Render - استخدم المنفذ الذي يوفره
+    port = int(os.environ.get("PORT", 5070))
     logger.info(f"Starting server on port {port}")
     
     app.run(

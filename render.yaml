@@ -1,0 +1,17 @@
+# render.yaml
+services:
+  - type: web
+    name: freefire-visit-bot
+    runtime: python
+    region: singapore  # أقرب منطقة للشرق الأوسط
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn v2_termux:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
+      - key: PORT
+        value: 5070
+    healthCheckPath: /health
+    autoDeploy: true

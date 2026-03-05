@@ -1,4 +1,5 @@
-flask
-aiohttp
-protobuf
-pycryptodome
+flask==2.3.3
+aiohttp==3.8.6
+protobuf==4.25.0
+pycryptodome==3.19.0
+gunicorn==21.2.0
