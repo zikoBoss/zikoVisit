@@ -1,5 +1,5 @@
 flask==2.3.3
-aiohttp==3.9.0b0
+aiohttp==3.9.0          # بدلاً من 3.10.11
 protobuf==4.25.0
 pycryptodome==3.19.0
 gunicorn==21.2.0
